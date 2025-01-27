@@ -71,8 +71,8 @@ There are also functions that narrow the element type by filtering elements of a
     {kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 * [`filterNotNull()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/filter-not-null.html) returns all
-    non-null elements. Being called on a `List<T?>`, `filterNotNull()` returns a `List<T: Any>`, thus allowing you to treat
-    the elements as non-null objects.
+    non-nullable elements. Being called on a `List<T?>`, `filterNotNull()` returns a `List<T: Any>`, thus allowing you to treat
+    the elements as non-nullable objects.
 
     ```kotlin
     fun main() {
@@ -113,7 +113,7 @@ Finally, there are functions that simply test a predicate against collection ele
 * [`any()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/any.html) returns `true` if at least one element matches the given predicate.
 * [`none()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/none.html) returns `true` if none of the elements match the given predicate.
 * [`all()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/all.html) returns `true` if all elements match the given predicate.
-    Note that `all()` returns `true` when called with any valid predicate on an empty collection. Such behavior is known in logic as [vacuous truth](https://en.wikipedia.org/wiki/Vacuous_truth).
+    Note that `all()` returns `true` when called with any valid predicate on an empty collection. Such behavior is known in logic as _[vacuous truth](https://en.wikipedia.org/wiki/Vacuous_truth)_.
 
 ```kotlin
 fun main() {

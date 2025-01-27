@@ -7,12 +7,12 @@ include the corresponding repository and dependency to our `build.gradle.kts` fi
 ```kotlin
 repositories {
     // ...
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation(kotlin("stdlib-js"))
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.8.0")
     // ...
 }
 ```
@@ -44,7 +44,7 @@ fun main() {
 When running this example in the browser, the DOM will be assembled in a straightforward way. This is easily confirmed
 by checking the Elements of the website using the developer tools of our browser:
 
-![Rendering a website from kotlinx.html](rendering-example.png)
+![Rendering a website from kotlinx.html](rendering-example.png){width=700}
 
 To learn more about the `kotlinx.html` library, check out the [GitHub Wiki](https://github.com/Kotlin/kotlinx.html/wiki/Getting-started),
 where you can find more information about how to [create elements](https://github.com/Kotlin/kotlinx.html/wiki/DOM-trees)

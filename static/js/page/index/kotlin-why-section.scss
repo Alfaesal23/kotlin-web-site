@@ -3,6 +3,10 @@
   padding-top: var(--xxxl-space);
 }
 
+.kotlin-why-section .kjq-tabs-tab__tabs {
+  overflow-y: hidden;
+}
+
 .kotlin-why-section__section {
   display: flex;
   flex-direction: column;
@@ -43,15 +47,34 @@
   width: 100%;
 }
 
+.kotlin-why-section__content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .kotlin-why-section__section .kto-button {
   align-self: center;
 }
 
+.kotlin-why-section__button-text-xs {
+  display: none;
+}
+
+@media (min-width: $breakpoint-xs) {
+  .kotlin-why-section__button-text-xxs {
+    display: none;
+  }
+
+  .kotlin-why-section__button-text-xs {
+    display: inline;
+  }
+}
 @media (min-width: $breakpoint-m) {
   .kotlin-why-section__section {
     display: grid;
     grid-template-columns: 33% 1fr;
-    grid-template-rows: max-content max-content auto;
+    grid-template-rows: auto auto 1fr;
     gap: 0 32px;
     grid-template-areas:
     "header content"

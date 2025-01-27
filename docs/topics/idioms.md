@@ -35,7 +35,7 @@ Or alternatively, even shorter:
 val positives = list.filter { it > 0 }
 ```
 
-Learn the difference between [Java and Kotlin filtering](java-to-kotlin-idioms-strings.md#create-a-string-from-collection-items).
+Learn the difference between [Java and Kotlin filtering](java-to-kotlin-collections-guide.md#filter-elements).
 
 ## Check the presence of an element in a collection
 
@@ -52,6 +52,22 @@ println("Name $name")
 ```
 
 Learn the difference between [Java and Kotlin string concatenation](java-to-kotlin-idioms-strings.md#concatenate-strings).
+
+## Read standard input safely
+
+```kotlin
+// Reads a string and returns null if the input can't be converted into an integer. For example: Hi there!
+val wrongInt = readln().toIntOrNull()
+println(wrongInt)
+// null
+
+// Reads a string that can be converted into an integer and returns an integer. For example: 13
+val correctInt = readln().toIntOrNull()
+println(correctInt)
+// 13
+```
+
+For more information, see [Read standard input.](read-standard-input.md)
 
 ## Instance checks
 
@@ -94,17 +110,17 @@ for ((k, v) in map) {
 ## Iterate over a range
 
 ```kotlin
-for (i in 1..100) { ... }  // closed range: includes 100
-for (i in 1 until 100) { ... } // half-open range: does not include 100
+for (i in 1..100) { ... }  // closed-ended range: includes 100
+for (i in 1..<100) { ... } // open-ended range: does not include 100
 for (x in 2..10 step 2) { ... }
 for (x in 10 downTo 1) { ... }
-if (x in 1..10) { ... }
+(1..10).forEach { ... }
 ```
 
 ## Lazy property
 
 ```kotlin
-val p: String by lazy {
+val p: String by lazy { // the value is computed only on first access
     // compute the string
 }
 ```
@@ -124,6 +140,22 @@ object Resource {
     val name = "Name"
 }
 ```
+
+## Use inline value classes for type-safe values
+
+```kotlin
+@JvmInline
+value class EmployeeId(private val id: String)
+
+@JvmInline
+value class CustomerId(private val id: String)
+```
+
+If you accidentally mix up `EmployeeId` and `CustomerId`, a compilation error is triggered.
+
+> The `@JvmInline` annotation is only needed for JVM backends.
+>
+{style="note"}
 
 ## Instantiate an abstract class
 
@@ -159,7 +191,15 @@ println(files?.size) // size is printed if files is not null
 ```kotlin
 val files = File("Test").listFiles()
 
+// For simple fallback values:
 println(files?.size ?: "empty") // if files is null, this prints "empty"
+
+// To calculate a more complicated fallback value in a code block, use `run`
+val filesSize = files?.size ?: run { 
+    val someSize = getSomeSize()
+    someSize * 2
+}
+println(filesSize)
 ```
 
 ## Execute a statement if null
@@ -175,6 +215,8 @@ val email = values["email"] ?: throw IllegalStateException("Email is missing!")
 val emails = ... // might be empty
 val mainEmail = emails.firstOrNull() ?: ""
 ```
+
+Learn the difference between [Java and Kotlin first item getting](java-to-kotlin-collections-guide.md#get-the-first-and-the-last-items-of-a-possibly-empty-collection).
 
 ## Execute if not null
 
@@ -225,14 +267,12 @@ fun test() {
 ## if expression
 
 ```kotlin
-fun foo(param: Int) {
-    val result = if (param == 1) {
-        "one"
-    } else if (param == 2) {
-        "two"
-    } else {
-        "three"
-    }
+val y = if (x == 1) {
+    "one"
+} else if (x == 2) {
+    "two"
+} else {
+    "other"
 }
 ```
 
@@ -322,17 +362,6 @@ stream.buffered().reader().use { reader ->
 inline fun <reified T: Any> Gson.fromJson(json: JsonElement): T = this.fromJson(json, T::class.java)
 ```
 
-## Nullable Boolean
-
-```kotlin
-val b: Boolean? = ...
-if (b == true) {
-    ...
-} else {
-    // `b` is false or null
-}
-```
-
 ## Swap two variables
 
 ```kotlin
@@ -353,7 +382,9 @@ fun calcTaxes(): BigDecimal = TODO("Waiting for feedback from accounting")
 
 IntelliJ IDEA's kotlin plugin understands the semantics of `TODO()` and automatically adds a code pointer in the TODO tool window. 
 
-## What’s next?
+## What's next?
 
-* Solve [Advent of Code puzzles](advent-of-code.md) using the idiomatic Kotlin style
-* Learn how to perform [typical tasks with strings in Java and Kotlin](java-to-kotlin-idioms-strings.md)
+* Solve [Advent of Code puzzles](advent-of-code.md) using the idiomatic Kotlin style.
+* Learn how to perform [typical tasks with strings in Java and Kotlin](java-to-kotlin-idioms-strings.md).
+* Learn how to perform [typical tasks with collections in Java and Kotlin](java-to-kotlin-collections-guide.md).
+* Learn how to [handle nullability in Java and Kotlin](java-to-kotlin-nullability-guide.md).

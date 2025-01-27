@@ -29,7 +29,7 @@ $ cinterop -def samples/gitchurn/src/nativeInterop/cinterop/libgit2.def -compile
 
 we will obtain `libgit2.klib`.
 
-See more details in [C Interop](native-c-interop.md)
+See more details in [C Interop](native-c-interop.md).
 
 ## klib utility
 
@@ -140,7 +140,15 @@ When given a `-library foo` flag, the compiler searches the `foo` library in the
 
 * Current compilation directory or an absolute path.
 * All repositories specified with `-repo` flag.
-* Libraries installed in the default repository (For now the default is  `~/.konan`, however it could be changed by setting **KONAN_DATA_DIR** environment variable).
+* Libraries installed in the default repository.
+
+   > The default repository is `~/.konan`. You can change it by setting the `kotlin.data.dir` Gradle property.
+   > 
+   > Alternatively, you can use the `-Xkonan-data-dir` compiler option to configure your custom path to the directory 
+   > via the `cinterop` and `konanc` tools.
+   > 
+   {style="note"}
+
 * Libraries installed in `$installation/klib` directory.
 
 ### Library format
@@ -172,3 +180,44 @@ directory structure, with the following layout:
 
 An example layout can be found in `klib/stdlib` directory of your installation.
 
+### Using relative paths in klibs
+
+> Using relative paths in klibs is available since Kotlin 1.6.20.
+> 
+{style="note"}
+
+A serialized IR representation of source files is [a part of](#library-format) a `klib` library. It includes paths of 
+files for generating proper debug information. By default, stored paths are absolute.
+With the `-Xklib-relative-path-base` compiler option, you can change the format and use only relative path in the 
+artifact. To make it work, pass one or multiple base paths of source files as an argument:
+
+<tabs group="build-script">
+<tab title="Kotlin" group-key="kotlin">
+
+```kotlin
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+// ...
+
+tasks.named<KotlinCompilationTask<*>>("compileKotlin").configure {
+    // $base is a base path of source files
+    compilerOptions.freeCompilerArgs.add("-Xklib-relative-path-base=$base")
+}
+```
+
+</tab>
+<tab title="Groovy" group-key="groovy">
+
+```groovy
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+// ...
+
+tasks.named('compileKotlin', KotlinCompilationTask) {
+    compilerOptions {
+        // $base is a base path of source files
+        freeCompilerArgs.add("-Xklib-relative-path-base=$base")
+    }
+}
+``` 
+
+</tab>
+</tabs>

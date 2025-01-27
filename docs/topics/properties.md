@@ -37,7 +37,7 @@ var <propertyName>[: <PropertyType>] [= <property_initializer>]
 ```
 
 The initializer, getter, and setter are optional. The property type is optional if it can be inferred from the initializer
-or from the initializer’s or the getter’s return type, as shown below:
+or the getter's return type, as shown below:
 
 ```kotlin
 var initialized = 1 // has type Int, default getter and setter
@@ -58,13 +58,13 @@ the property (this way you can implement a computed property). Here's an example
 ```kotlin
 //sampleStart
 class Rectangle(val width: Int, val height: Int) {
-    val square: Int
+    val area: Int // property type is optional since it can be inferred from the getter's return type
         get() = this.width * this.height
 }
 //sampleEnd
 fun main() {
     val rectangle = Rectangle(3, 4)
-    println("Width=${rectangle.width}, height=${rectangle.height}, square=${rectangle.square}")
+    println("Width=${rectangle.width}, height=${rectangle.height}, area=${rectangle.area}")
 }
 ```
 {kotlin-runnable="true"}
@@ -72,7 +72,7 @@ fun main() {
 You can omit the property type if it can be inferred from the getter:
 
 ```kotlin
-val square get() = this.width * this.height
+val area get() = this.width * this.height
 ```
 
 If you define a custom setter, it will be called every time you assign a value to the property, except its initialization.
@@ -88,7 +88,7 @@ var stringRepresentation: String
 
 By convention, the name of the setter parameter is `value`, but you can choose a different name if you prefer.
 
-If you need to annotate an accessor or change its visibility, but you don't need to change the default implementation,
+If you need to annotate an accessor or change its visibility, but you don't want to change the default implementation,
 you can define the accessor without defining its body:
 
 ```kotlin
@@ -144,18 +144,20 @@ public val table: Map<String, Int>
 
 > On the JVM: Access to private properties with default getters and setters is optimized to avoid function call overhead.
 >
-{type="note"}
+{style="note"}
 
 ## Compile-time constants
 
 If the value of a read-only property is known at compile time, mark it as a _compile time constant_ using the `const` modifier.
-Such a property needs to fulfil the following requirements:
+Such a property needs to fulfill the following requirements:
 
-* It must be a top-level property, or a member of an [`object` declaration](object-declarations.md#object-declarations-overview) or [a companion object](object-declarations.md#companion-objects).
+* It must be a top-level property, or a member of an [`object` declaration](object-declarations.md#object-declarations-overview) or a _[companion object](object-declarations.md#companion-objects)_.
 * It must be initialized with a value of type `String` or a primitive type
 * It cannot be a custom getter
 
-Such properties can be used in annotations:
+The compiler will inline usages of the constant, replacing the reference to the constant with its actual value. However, the field will not be removed and therefore can be interacted with using [reflection](reflection.md).
+
+Such properties can also be used in annotations:
 
 ```kotlin
 const val SUBSYSTEM_DEPRECATED: String = "This subsystem is deprecated"
@@ -165,9 +167,9 @@ const val SUBSYSTEM_DEPRECATED: String = "This subsystem is deprecated"
 
 ## Late-initialized properties and variables
 
-Normally, properties declared as having a non-null type must be initialized in the constructor.
+Normally, properties declared as having a non-nullable type must be initialized in the constructor.
 However, it is often the case that doing so is not convenient. For example, properties can be initialized through dependency
-injection, or in the setup method of a unit test. In these cases, you cannot supply a non-null initializer in the constructor,
+injection, or in the setup method of a unit test. In these cases, you cannot supply a non-nullable initializer in the constructor,
 but you still want to avoid null checks when referencing the property inside the body of a class.
 
 To handle such cases, you can mark the property with the `lateinit` modifier:
@@ -188,12 +190,12 @@ public class MyTest {
 
 This modifier can be used on `var` properties declared inside the body of a class (not in the primary constructor,
 and only when the property does not have a custom getter or setter), as well as for top-level properties and local variables.
-The type of the property or variable must be non-null, and it must not be a primitive type.
+The type of the property or variable must be non-nullable, and it must not be a primitive type.
 
 Accessing a `lateinit` property before it has been initialized throws a special exception that clearly identifies the property
 being accessed and the fact that it hasn't been initialized.
 
-### Checking whether a `lateinit var` is initialized
+### Checking whether a lateinit var is initialized
 
 To check whether a `lateinit var` has already been initialized, use `.isInitialized` on the [reference to that property](reflection.md#property-references):
 

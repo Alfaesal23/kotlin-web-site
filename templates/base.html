@@ -11,6 +11,7 @@
     {% include 'inc/head.html' %}
 
     {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='shared.css')|autoversion }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='common.css')|autoversion }}"/>
 </head>
 <body class="page_js_no">
@@ -22,6 +23,7 @@
     {% set headerDropdownTheme = "light" %}
 {% endif %}
 
+{% block top_banner %}{% endblock %}
 <div class="global-layout">
     {% ktl_component "header" productWebUrl=data.releases.latest.url hasSearch=True dropdownTheme=headerDropdownTheme currentUrl=headerCurrentUrl %}
     {% block page_outer_content %}
@@ -37,9 +39,8 @@
     {% ktl_component "footer" %}
 </div>
 
-{% include 'inc/search-popup.html' %}
-
 <script>document.body.className = document.body.className.replace('page_js_no', 'page_js_yes')</script>
+<script src="{{ url_for('static', filename='shared.js')|autoversion }}"></script>
 <script src="{{ url_for('static', filename='common.js')|autoversion }}"></script>
 {% block scripts %}{% endblock %}
 </body>

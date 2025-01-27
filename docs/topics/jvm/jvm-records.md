@@ -8,7 +8,7 @@ They have a concise syntax in Java and save you from having to write boilerplate
 public record Person (String name, int age) {}
 ```
 
-The compiler automatically generates a final class inherited from [`java.lang.Record`](https://download.java.net/java/early_access/jdk16/docs/api/java.base/java/lang/Record.html) with the following members:
+The compiler automatically generates a final class inherited from [`java.lang.Record`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Record.html) with the following members:
 * a private final field for each record component
 * a public constructor with parameters for all fields
 * a set of methods to implement structural equality: `equals()`, `hashCode()`, `toString()`
@@ -22,7 +22,8 @@ You can use record classes with components that are declared in Java the same wa
 To access the record component, just use its name like you do for [Kotlin properties](properties.md):
 
 ```kotlin
-val firstName = Person.name
+val newPerson = Person("Kotlin", 10)
+val firstName = newPerson.name
 ```
 
 ## Declare records in Kotlin
@@ -33,7 +34,7 @@ To declare a record class in Kotlin, use the `@JvmRecord` annotation:
 
 > Applying `@JvmRecord` to an existing class is not a binary compatible change. It alters the naming convention of the class property accessors.
 >
-{type="note"}
+{style="note"}
 
 ```kotlin
 @JvmRecord
@@ -62,7 +63,7 @@ To declare a data class with the `@JvmRecord` annotation, it must meet the follo
 
 JVM records require the `16` target version or higher of the generated JVM bytecode.
 
-To specify it explicitly, use the `jvmTarget` compiler option in [Gradle](gradle.md#attributes-specific-to-jvm) or [Maven](maven.md#attributes-specific-to-jvm).
+To specify it explicitly, use the `jvmTarget` compiler option in [Gradle](gradle-compiler-options.md#attributes-specific-to-jvm) or [Maven](maven.md#attributes-specific-to-jvm).
 
 ## Further discussion
 

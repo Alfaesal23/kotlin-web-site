@@ -7,7 +7,6 @@ Type-safe builders allow creating Kotlin-based domain-specific languages (DSLs) 
 data structures in a semi-declarative way. Sample use cases for the builders are:
 
 * Generating markup with Kotlin code, such as [HTML](https://github.com/Kotlin/kotlinx.html) or XML
-* Programmatically laying out UI components: [Anko](https://github.com/Kotlin/anko/wiki/Anko-Layouts)
 * Configuring routes for a web server: [Ktor](https://ktor.io/docs/routing.html)
 
 Consider the following code:
@@ -110,14 +109,14 @@ The `head` and `body` functions in the `HTML` class are defined similarly to `ht
 The only difference is that they add the built instances to the `children` collection of the enclosing `HTML` instance:
 
 ```kotlin
-fun head(init: Head.() -> Unit) : Head {
+fun head(init: Head.() -> Unit): Head {
     val head = Head()
     head.init()
     children.add(head)
     return head
 }
 
-fun body(init: Body.() -> Unit) : Body {
+fun body(init: Body.() -> Unit): Body {
     val body = Body()
     body.init()
     children.add(body)
@@ -173,7 +172,7 @@ so that it becomes a proper part of the tag tree.
 All this is defined in a package `com.example.html` that is imported at the top of the builder example above.
 In the last section you can read through the full definition of this package.
 
-## Scope control: `@DslMarker`
+## Scope control: @DslMarker
 
 When using DSLs, one might have come across the problem that too many functions can be called in the context. 
 You can call methods of every available implicit receiver inside a lambda and therefore get an inconsistent result, 
@@ -215,8 +214,9 @@ abstract class Tag(val name: String) { ... }
 
 You don't have to annotate the `HTML` or `Head` classes with `@HtmlTagMarker` because their superclass is already annotated:
 
-```
+```kotlin
 class HTML() : Tag("html") { ... }
+
 class Head() : Tag("head") { ... }
 ```
 
@@ -242,7 +242,7 @@ html {
 }
 ```
 
-## Full definition of the `com.example.html` package
+## Full definition of the com.example.html package
 
 This is how the package `com.example.html` is defined (only the elements used in the example above).
 It builds an HTML tree. It makes heavy use of [extension functions](extensions.md) and

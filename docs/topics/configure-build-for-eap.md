@@ -1,8 +1,10 @@
 [//]: # (title: Configure your build for EAP)
 
-If you create new projects using the EAP version of Kotlin, you don’t need to perform any additional steps. The [Kotlin Plugin](install-eap-plugin.md) will do everything for you!
-
-You only need to configure your build manually for existing projects — projects that were created before installing the EAP version.
+<tldr>
+    <!-- <p>No preview versions are currently available</p> -->
+    <p>Latest Kotlin EAP release: <strong>%kotlinEapVersion%</strong></p>
+    <p><a href="eap.md#build-details">Explore Kotlin EAP release details</a></p>
+</tldr>
 
 To configure your build to use the EAP version of Kotlin, you need to: 
 
@@ -13,7 +15,7 @@ The EAP version of Kotlin may not work with the libraries of the previously rele
 The following procedures describe how to configure your build in Gradle and Maven:
 
 * [Configure in Gradle](#configure-in-gradle)
-* [Configure in Maven](#configure-in-maven)  
+* [Configure in Maven](#configure-in-maven)
 
 ## Configure in Gradle 
 
@@ -36,12 +38,12 @@ Here is an example for the Multiplatform project.
 
 ```kotlin
 plugins {
-   java
-   kotlin("multiplatform") version "KOTLIN-EAP-VERSION"
+    java
+    kotlin("multiplatform") version "KOTLIN-EAP-VERSION"
 }
 
 repositories {
-   mavenCentral()
+    mavenCentral()
 }
 ```
 
@@ -50,12 +52,12 @@ repositories {
 
 ```groovy
 plugins {
-   id 'java'
-   id 'org.jetbrains.kotlin.multiplatform' version 'KOTLIN-EAP-VERSION'
+    id 'java'
+    id 'org.jetbrains.kotlin.multiplatform' version 'KOTLIN-EAP-VERSION'
 }
 
 repositories {
-   mavenCentral()
+    mavenCentral()
 }
 ```
 
@@ -73,7 +75,7 @@ see [EAP build details](eap.md#build-details).
 > 
 > If there are incompatible changes in next EAP versions, we release a new version of the library.
 >
-{type="note"}
+{style="note"}
 
 Here is an example.
 
@@ -146,3 +148,8 @@ In the sample Maven project definition, replace `KOTLIN-EAP-VERSION` with the ac
 </project>
 ```
 
+## If you run into any problems
+
+* Report an issue to [our issue tracker, YouTrack](https://kotl.in/issue).
+* Find help in the [#eap channel in Kotlin Slack](https://app.slack.com/client/T09229ZC6/C0KLZSCHF) ([get an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up)).
+* Roll back to the latest stable version: [change it in your build script file](configure-build-for-eap.md#adjust-the-kotlin-version).

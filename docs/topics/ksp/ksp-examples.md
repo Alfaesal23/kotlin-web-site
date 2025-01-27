@@ -1,22 +1,20 @@
 [//]: # (title: KSP examples)
 
-Get all member functions that are declared directly within a class:
+## Get all member functions
 
 ```kotlin
-fun KSClassDeclaration.getDeclaredFunctions(): List<KSFunctionDeclaration> {
-    return this.declarations.filterIsInstance<KSFunctionDeclaration>()
-}
+fun KSClassDeclaration.getDeclaredFunctions(): Sequence<KSFunctionDeclaration> =
+    declarations.filterIsInstance<KSFunctionDeclaration>()
 ```
 
-Determine whether a class or function is local to another function:
+## Check whether a class or function is local
 
 ```kotlin
-fun KSDeclaration.isLocal(): Boolean {
-    return this.parentDeclaration != null && this.parentDeclaration !is KSClassDeclaration
-}
+fun KSDeclaration.isLocal(): Boolean =
+    parentDeclaration != null && parentDeclaration !is KSClassDeclaration
 ```
 
-Find the actual class or interface declaration that the alias points to recursively:
+## Find the actual class or interface declaration that the type alias points to
 
 ```kotlin
 fun KSTypeAlias.findActualType(): KSClassDeclaration {
@@ -29,19 +27,17 @@ fun KSTypeAlias.findActualType(): KSClassDeclaration {
 }
 ```
 
-Find out suppressed names in a file annotation:
+## Collect suppressed names in a file annotation
 
 ```kotlin
 // @file:kotlin.Suppress("Example1", "Example2")
-fun KSFile.suppressedNames(): List<String> {
-    val ignoredNames = mutableListOf<String>()
-    annotations.forEach {
-        if (it.shortName.asString() == "Suppress" && it.annotationType.resolve()?.declaration?.qualifiedName?.asString() == "kotlin.Suppress") {
-            it.arguments.forEach {
-                (it.value as List<String>).forEach { ignoredNames.add(it) }
-            }
+fun KSFile.suppressedNames(): Sequence<String> = annotations
+    .filter {
+        it.shortName.asString() == "Suppress" &&
+        it.annotationType.resolve().declaration.qualifiedName?.asString() == "kotlin.Suppress"
+    }.flatMap {
+        it.arguments.flatMap {
+            (it.value as Array<String>).toList()
         }
     }
-    return ignoredNames
-}
-```
+```

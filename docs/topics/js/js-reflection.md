@@ -2,8 +2,10 @@
 
 Kotlin/JS provides a limited support for the Kotlin [reflection API](reflection.md). The only supported parts of the API
 are:
-* [class references](reflection.md#class-references) (`::class`).
-* [`KType`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/) and [`typeof()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/type-of.html) function.
+
+* [Class references](reflection.md#class-references) (`::class`)
+* [`KType` and `typeof()`](#ktype-and-typeof)
+* [`KClass` and `createInstance()`](#kclass-and-createinstance)
 
 ## Class references
 
@@ -22,16 +24,15 @@ This can be used to interoperate with JS functions that expect a reference to a 
 
 ## KType and typeOf()
 
-> The `typeOf()` function is [Experimental](components-stability.md). It may be dropped or changed at any time.
-> Opt-in is required (see details below). Use it only for evaluation purposes. We appreciate your feedback on it in [YouTrack](https://youtrack.jetbrains.com/issues/KT).
->
-{type="warning"}
-
-The [`typeof()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/type-of.html) function constructs an instance of [`KType`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)
-for a given type. To use `typeOf()` in your code, [opt in](opt-in-requirements.md#opt-in-to-using-api) to the experimental
-API of the standard library, for example, add `@OptIn(ExperimentalStdlibApi::class)` to your code.
-
+The [`typeof()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/type-of.html) function constructs an instance 
+of [`KType`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/) for a given type.
 The `KType` API is fully supported in Kotlin/JS except for Java-specific parts.
+
+## KClass and createInstance()
+
+The [`createInstance()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect.full/create-instance.html) function
+from the [KClass](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/) interface creates a new instance
+of the specified class, which is useful for getting the runtime reference to a Kotlin class.
 
 ## Example
 
@@ -41,7 +42,6 @@ Here is an example of the reflection usage in Kotlin/JS.
 open class Shape
 class Rectangle : Shape()
 
-@OptIn(ExperimentalStdlibApi::class) // typeOf() is experimental and requires an opt-in
 inline fun <reified T> accessReifiedTypeArg() =
     println(typeOf<T>().toString())
 
@@ -60,5 +60,3 @@ fun main() {
     accessReifiedTypeArg<Rectangle>() // Accesses the type via typeOf(). Prints "Rectangle"
 }
 ```
-
-
